@@ -20,3 +20,60 @@ model User {
 
   @@map("users")
 }
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  price       Float
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("products")
+}
+
+model Movie {
+  id        BigInt      @id @default(autoincrement())
+  title     String
+  director  String
+  year      Int
+  rating    Float?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("movies")
+}
+
+// Representa el carrito activo
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String
+  status    CartStatus @default(ACTIVE)
+  createdAt DateTime   @default(now()) @map("created_at")
+  items     CartItem[]
+
+  @@map("carts")
+}
+
+// Cada línea del carrito: cuántas unidades y qué producto
+model CartItem {
+  id        String @id @default(uuid())
+  cartId    String
+  productId String
+  quantity  Int
+
+  cart Cart @relation(fields: [cartId], references: [id])
+
+  @@map("cart_items")
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  userId    String
+  total     Float
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("orders")
+}
+
+enum CartStatus {
+  ACTIVE
+  CHECKED_OUT
+}

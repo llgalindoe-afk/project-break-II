@@ -4,6 +4,7 @@ import helmet from "helmet"
 import cors from "cors"
 import rateLimit from "express-rate-limit"
 import authRouter from "./routes/authRoutes.js"
+import cartRouter from "./routes/cart.js"
 import productsRouter from "./routes/products.routes.js"
 import dotenv from 'dotenv';
 dotenv.config();
@@ -38,7 +39,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-app.use(authRouter)
-app.use(productsRouter)
+app.use("/api/authRouter)
+app.use("/api/cart", cartRouter)
+  app.use(productsRouter)
 
 export default app
