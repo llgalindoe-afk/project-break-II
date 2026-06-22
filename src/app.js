@@ -1,4 +1,8 @@
 import express from "express"
+import moviesRouter from "./routes/movies.js"
+import { logger } from './middlewares/logger.middleware.js'
+import { notFound } from "./middlewares/notFound.js"
+import { errorHandler } from "./middlewares/errorHandler.js"
 import cookieParser from "cookie-parser"
 import helmet from "helmet"
 import cors from "cors"
@@ -32,10 +36,21 @@ const limiter = rateLimit({
   }
 })
 
+app.use(express.json())
+app.use("/movies", moviesRouter)
+app.use(logger) // ANTES de las rutas
+app.use('/api/movies', moviesRouter)
+app.use(notFound)
+app.use(errorHandler)
+app.use('/api/auth', authRouter)
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "API Crud completo activa",
 app.use(helmet())
 app.use(cors(corsOptions))
 app.use(limiter)
-app.use(express.json())
+
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
