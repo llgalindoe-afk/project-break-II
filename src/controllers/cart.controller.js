@@ -1,4 +1,4 @@
-import { getCart, getCartById, addItem, checkout } from "../services/cart.js"
+import { getCart, getCartById, addItem, checkout } from "../services/cart.service.js"
 
 export const getCartController = async (req, res) => {
   try {

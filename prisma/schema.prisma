@@ -10,7 +10,10 @@ model User {
   id        Int       @id @default(autoincrement())
   email     String?   @unique @db.VarChar(100)
   password  String?   @db.VarChar(255)
+  role      String    @default("user") @db.VarChar(20)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
+  carts     Cart[]
+  orders    Order[]
 
   @@map("users")
 }
@@ -24,6 +27,50 @@ model Movie {
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(6)
 
   @@map("movies")
+}
+
+model Product {
+  id          Int        @id @default(autoincrement())
+  name        String     @db.VarChar(255)
+  description String?    @db.Text
+  price       Float
+  imageUrl    String?    @db.Text
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
+  cartItems   CartItem[]
+
+  @@map("products")
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  userId    Int
+  status    String     @default("ACTIVE") @db.VarChar(20)
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp(6)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  cartId    Int
+  productId Int
+  quantity  Int      @default(1)
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("cart_items")
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  total     Float
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("orders")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.

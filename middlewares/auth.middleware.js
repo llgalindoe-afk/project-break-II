@@ -1,10 +1,5 @@
 import jwt from "jsonwebtoken"
-import { authMiddleware }
-  from '../middlewares/auth.middleware.js'
 
-// Ahora todas las rutas de movies requieren auth
-router.get('/', authMiddleware, getMovies)
-router.post('/', authMiddleware, createMovie)
 export const authMiddleware = (req, res, next) => {
   const token = req.cookies.token
 

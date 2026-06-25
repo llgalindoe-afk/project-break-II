@@ -1,11 +1,11 @@
 import express from "express"
-import { authMiddleware } from "../middlewares/authMiddleware.js"
+import { authMiddleware } from "../../middlewares/auth.middleware.js"
 import {
   getCartController,
   getCartByIdController,
   addItemController,
   checkoutController,
-} from "../controllers/cart.js"
+} from "../controllers/cart.controller.js"
 
 const router = express.Router()
 
