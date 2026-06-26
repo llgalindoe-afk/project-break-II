@@ -10,6 +10,8 @@ import moviesRouter from "./routes/movies.js"
 import authRouter from "./routes/authRoutes.js"
 import cartRouter from "./routes/cart.routes.js"
 import productsRouter from "./routes/products.routes.js"
+import reviewRouter from "./routes/review.routes.js"
+import wishlistRouter from "./routes/whislist.routes.js"
 
 // Importar middlewares (desde la raíz del proyecto)
 import { logger } from "../middlewares/logger.middleware.js"
@@ -67,6 +69,8 @@ app.use("/api/auth", authRouter)
 app.use("/api/cart", cartRouter)
 app.use(productsRouter)
 app.use("/api/movies", moviesRouter)
+app.use(reviewRouter)
+app.use(wishlistRouter)
 
 // Manejo de errores
 app.use(notFound)
