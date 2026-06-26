@@ -4,6 +4,8 @@ import helmet from "helmet"
 import cors from "cors"
 import rateLimit from "express-rate-limit"
 import dotenv from "dotenv"
+import swaggerUi from "swagger-ui-express"
+import swaggerDocument from "../swagger.json" assert { type: "json" }
 
 // Importar rutas
 import moviesRouter from "./routes/movies.js"
@@ -69,6 +71,7 @@ app.use("/api/auth", authRouter)
 app.use("/api/cart", cartRouter)
 app.use(productsRouter)
 app.use("/api/movies", moviesRouter)
+app.use("/api/docs" , swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(reviewRouter)
 app.use(wishlistRouter)
 
