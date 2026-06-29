@@ -5,7 +5,7 @@ import cors from "cors"
 import rateLimit from "express-rate-limit"
 import dotenv from "dotenv"
 import swaggerUi from "swagger-ui-express"
-import swaggerDocument from "../swagger.json" assert { type: "json" }
+import swaggerDocument from "../swagger.json" with { type: "json" }
 
 // Importar rutas
 import moviesRouter from "./routes/movies.js"

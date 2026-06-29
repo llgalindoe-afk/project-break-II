@@ -1,0 +1,9 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "E-Commerce API",
+    "version": "1.0.0",
+    "description": "API for E-Commerce project with Supabase and MongoDB"
+  },
+  "paths": {}
+}
