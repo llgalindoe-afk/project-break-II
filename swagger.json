@@ -83,6 +83,42 @@
             "example": "https://example.com/iphone15.jpg"
           }
         }
+      },
+      "ReviewInput": {
+        "type": "object",
+        "required": [
+          "rating",
+          "comment"
+        ],
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "example": "Excelente producto, superó mis expectativas."
+          }
+        }
+      },
+      "CartItemInput": {
+        "type": "object",
+        "required": [
+          "productId",
+          "quantity"
+        ],
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "example": 1
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 2
+          }
+        }
       }
     }
   },
@@ -93,24 +129,7 @@
         "description": "Devuelve un estado simple indicando que el servidor de la API está levantado y corriendo.",
         "responses": {
           "200": {
-            "description": "Estado saludable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "status": {
-                      "type": "string",
-                      "example": "healthy"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Estado saludable"
           }
         }
       }
@@ -131,44 +150,10 @@
         },
         "responses": {
           "201": {
-            "description": "Usuario registrado exitosamente",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Usuario registrado con éxito"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer",
-                          "example": 1
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "testuser@example.com"
-                        },
-                        "role": {
-                          "type": "string",
-                          "example": "user"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Usuario registrado exitosamente"
           },
           "400": {
-            "description": "Datos de entrada inválidos o email ya registrado"
+            "description": "Datos de entrada inválidos"
           }
         }
       }
@@ -189,32 +174,7 @@
         },
         "responses": {
           "200": {
-            "description": "Inicio de sesión exitoso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "El login se realizó con éxito"
-                    },
-                    "token": {
-                      "type": "string",
-                      "description": "Copia este token para el diálogo Authorize",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Faltan email o contraseña"
+            "description": "Inicio de sesión exitoso"
           },
           "401": {
             "description": "Credenciales inválidas"
@@ -233,40 +193,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Datos del perfil devueltos exitosamente",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer",
-                          "example": 2
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "admin@example.com"
-                        },
-                        "role": {
-                          "type": "string",
-                          "example": "admin"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Datos del perfil devueltos exitosamente"
           },
           "401": {
-            "description": "No autorizado. Token no proporcionado o expirado."
+            "description": "No autorizado"
           }
         }
       }
@@ -303,12 +233,6 @@
           "201": {
             "description": "Producto creado con éxito"
           },
-          "400": {
-            "description": "Faltan campos obligatorios"
-          },
-          "401": {
-            "description": "No autorizado (falta token o es inválido)"
-          },
           "403": {
             "description": "Acceso denegado (requiere rol admin)"
           }
@@ -335,9 +259,6 @@
           "200": {
             "description": "Detalles del producto"
           },
-          "400": {
-            "description": "ID inválido"
-          },
           "404": {
             "description": "Producto no encontrado"
           }
@@ -356,7 +277,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "ID numérico del producto a actualizar",
+            "description": "ID del producto a actualizar",
             "schema": {
               "type": "integer",
               "example": 1
@@ -377,17 +298,8 @@
           "200": {
             "description": "Producto actualizado con éxito"
           },
-          "400": {
-            "description": "ID inválido o datos incorrectos"
-          },
-          "401": {
-            "description": "No autorizado"
-          },
           "403": {
             "description": "Acceso denegado (requiere rol admin)"
-          },
-          "404": {
-            "description": "Producto no encontrado"
           }
         }
       },
@@ -404,7 +316,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "ID numérico del producto a eliminar",
+            "description": "ID del producto a eliminar",
             "schema": {
               "type": "integer",
               "example": 1
@@ -415,17 +327,278 @@
           "200": {
             "description": "Producto eliminado con éxito"
           },
-          "400": {
-            "description": "ID inválido"
+          "403": {
+            "description": "Acceso denegado"
+          }
+        }
+      }
+    },
+    "/api/products/{id}/reviews": {
+      "get": {
+        "summary": "Obtener reseñas de un producto (MongoDB)",
+        "description": "Obtiene la lista de reseñas del producto a partir del ID de producto.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID numérico del producto",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de reseñas"
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear reseña para un producto (MongoDB)",
+        "description": "Agrega una nueva reseña al producto especificado. Requiere autenticación.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID numérico del producto a reseñar",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reseña añadida con éxito"
+          },
+          "401": {
+            "description": "No autorizado"
+          }
+        }
+      }
+    },
+    "/api/wishlist": {
+      "get": {
+        "summary": "Obtener wishlist del usuario",
+        "description": "Devuelve los elementos guardados en la wishlist del usuario autenticado.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de la wishlist"
+          },
+          "401": {
+            "description": "No autorizado"
+          }
+        }
+      }
+    },
+    "/api/wishlist/{productId}": {
+      "post": {
+        "summary": "Añadir o remover un producto de la wishlist (Toggle)",
+        "description": "Añade el producto a la wishlist si no estaba presente, o lo remueve si ya existía. Requiere autenticación.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "description": "ID numérico del producto",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado de la wishlist actualizado con éxito"
+          },
+          "401": {
+            "description": "No autorizado"
+          }
+        }
+      }
+    },
+    "/api/whislist": {
+      "get": {
+        "summary": "Obtener wishlist del usuario (Alias)",
+        "description": "Alias con tolerancia a typo del endpoint principal de wishlist.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de la wishlist"
+          }
+        }
+      }
+    },
+    "/api/whislist/{productId}": {
+      "post": {
+        "summary": "Añadir o remover de la wishlist (Toggle - Alias)",
+        "description": "Alias con tolerancia a typo del endpoint principal de wishlist.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado de la wishlist actualizado"
+          }
+        }
+      }
+    },
+    "/api/cart": {
+      "get": {
+        "summary": "Ver el carrito activo del usuario",
+        "description": "Obtiene los detalles del carrito activo del usuario. Si no existe, se crea automáticamente un carrito activo.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles del carrito"
+          },
+          "401": {
+            "description": "No autorizado"
+          }
+        }
+      }
+    },
+    "/api/cart/items": {
+      "post": {
+        "summary": "Añadir producto al carrito",
+        "description": "Añade un producto al carrito activo del usuario autenticado. Requiere autenticación.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartItemInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Item añadido al carrito"
+          },
+          "401": {
+            "description": "No autorizado"
+          }
+        }
+      }
+    },
+    "/api/cart/items/{itemID}": {
+      "delete": {
+        "summary": "Eliminar item del carrito por ID de item",
+        "description": "Elimina una entrada de producto específica (cartItem) del carrito del usuario utilizando su ID de item. Requiere autenticación.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "itemID",
+            "in": "path",
+            "required": true,
+            "description": "ID numérico de la entrada cartItem",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item eliminado con éxito"
           },
           "401": {
             "description": "No autorizado"
           },
-          "403": {
-            "description": "Acceso denegado (requiere rol admin)"
-          },
           "404": {
-            "description": "Producto no encontrado"
+            "description": "El item no existe"
+          }
+        }
+      }
+    },
+    "/api/cart/checkout": {
+      "post": {
+        "summary": "Realizar checkout del carrito",
+        "description": "Procesa el carrito activo, crea el pedido correspondiente y marca el carrito como 'CHECKED_OUT'. Requiere autenticación.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido creado con éxito"
+          },
+          "400": {
+            "description": "El carrito está vacío o no hay carrito activo"
+          },
+          "401": {
+            "description": "No autorizado"
+          }
+        }
+      }
+    },
+    "/api/docs": {
+      "get": {
+        "summary": "Acceso a la documentación interactiva de Swagger UI",
+        "description": "Endpoint desde el cual se sirve esta documentación interactiva.",
+        "responses": {
+          "200": {
+            "description": "Página de Swagger UI"
           }
         }
       }

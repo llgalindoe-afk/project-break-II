@@ -1,4 +1,4 @@
-import { getCart, getCartById, addItem, checkout } from "../services/cart.service.js"
+import { getCart, getCartById, addItem, checkout, removeItem } from "../services/cart.service.js"
 
 export const getCartController = async (req, res) => {
   try {
@@ -60,6 +60,29 @@ export const checkoutController = async (req, res) => {
     res.json({
       ok: true,
       data: order,
+    })
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      error: error.message,
+    })
+  }
+}
+
+export const removeItemController = async (req, res) => {
+  try {
+    const cartItemId = parseInt(req.params.itemID)
+    if (isNaN(cartItemId)) {
+      return res.status(400).json({
+        ok: false,
+        error: "El ID del item debe ser un número válido",
+      })
+    }
+
+    await removeItem(req.user.id, cartItemId)
+    res.json({
+      ok: true,
+      message: "Item eliminado del carrito con éxito",
     })
   } catch (error) {
     res.status(500).json({

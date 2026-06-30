@@ -84,3 +84,22 @@ export const checkout = async (userId) => {
 
   return order
 }
+
+export const removeItem = async (userId, cartItemId) => {
+  const item = await prisma.cartItem.findUnique({
+    where: { id: cartItemId },
+    include: { cart: true },
+  })
+
+  if (!item) {
+    throw new Error("El item no existe")
+  }
+
+  if (item.cart.userId !== userId) {
+    throw new Error("No tienes permiso para eliminar este item del carrito")
+  }
+
+  return prisma.cartItem.delete({
+    where: { id: cartItemId },
+  })
+}

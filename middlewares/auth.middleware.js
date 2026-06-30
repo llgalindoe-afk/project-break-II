@@ -1,7 +1,13 @@
 import jwt from "jsonwebtoken"
 
 export const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token
+  let token = req.cookies.token
+
+  // Permitir también autenticación por cabecera Bearer (para Swagger)
+  const authHeader = req.headers.authorization
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    token = authHeader.split(" ")[1]
+  }
 
   if (!token) {
     return res.status(401).json({
@@ -15,7 +21,10 @@ export const authMiddleware = (req, res, next) => {
     req.user = decoded // {id, email, role}
     next()
   } catch (error) {
-    res.clearCookie("token")
+    // Si viene de cookie, la limpiamos, si no, solo retornamos error
+    if (req.cookies.token) {
+      res.clearCookie("token")
+    }
     res.status(401).json({
       ok: false,
       error: "Sesión inválida o expirada",
