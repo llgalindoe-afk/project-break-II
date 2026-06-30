@@ -25,6 +25,7 @@ const login = async (req, res) => {
     res.json({
       ok: true,
       message: "El login se realizó con éxito",
+      token,
     })
   } catch (error) {
     res.status(401).json({

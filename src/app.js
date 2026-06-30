@@ -14,6 +14,7 @@ import cartRouter from "./routes/cart.routes.js"
 import productsRouter from "./routes/products.routes.js"
 import reviewRouter from "./routes/review.routes.js"
 import wishlistRouter from "./routes/whislist.routes.js"
+import usersRouter from "./routes/users.routes.js"
 
 // Importar middlewares (desde la raíz del proyecto)
 import { logger } from "../middlewares/logger.middleware.js"
@@ -66,10 +67,19 @@ app.get("/", (req, res) => {
   })
 })
 
+// Ruta de health check
+app.get("/health", (req, res) => {
+  res.json({
+    ok: true,
+    status: "healthy",
+  })
+})
+
 // Rutas de la API
 app.use("/api/auth", authRouter)
 app.use("/api/cart", cartRouter)
 app.use(productsRouter)
+app.use(usersRouter)
 app.use("/api/movies", moviesRouter)
 app.use("/api/docs" , swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(reviewRouter)

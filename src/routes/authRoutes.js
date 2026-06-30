@@ -8,6 +8,7 @@ const router = express.Router()
 // Ruta pública
 router.post("/login", authController.login)
 router.post("/api/auth/login", authController.login)
+router.post("/register", authController.register)
 router.post("/api/auth/register", authController.register)
 // Rutas protegidas
 router.get("/profile", authenticate, authController.getProfile)
