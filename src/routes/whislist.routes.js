@@ -12,4 +12,8 @@ router.get("/api/whislist", authMiddleware, wishlistController.getUserWishlist)
 router.post("/api/wishlist/:productId", authMiddleware, wishlistController.toggleWishlistItem)
 router.post("/api/whislist/:productId", authMiddleware, wishlistController.toggleWishlistItem)
 
+// DELETE /api/wishlist/:productId (Protegido)
+router.delete("/api/wishlist/:productId", authMiddleware, wishlistController.removeFromWishlist)
+router.delete("/api/whislist/:productId", authMiddleware, wishlistController.removeFromWishlist)
+
 export default router

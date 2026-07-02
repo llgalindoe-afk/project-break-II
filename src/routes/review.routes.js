@@ -10,4 +10,7 @@ router.get("/api/products/:id/reviews", reviewController.getProductReviews)
 // POST /api/products/:id/reviews (Protegido)
 router.post("/api/products/:id/reviews", authMiddleware, reviewController.addProductReview)
 
+// DELETE /api/products/:id/reviews/:reviewId (Protegido)
+router.delete("/api/products/:id/reviews/:reviewId", authMiddleware, reviewController.deleteProductReview)
+
 export default router

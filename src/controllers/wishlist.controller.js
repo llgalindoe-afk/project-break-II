@@ -42,7 +42,36 @@ const toggleWishlistItem = async (req, res, next) => {
   }
 }
 
+const removeFromWishlist = async (req, res, next) => {
+  try {
+    const productId = parseInt(req.params.productId)
+    if (isNaN(productId)) {
+      return res.status(400).json({
+        ok: false,
+        success: false,
+        error: "El ID del producto debe ser un número válido",
+      })
+    }
+
+    const userId = req.user.id
+    const result = await wishlistService.removeFromWishlist(userId, productId)
+
+    res.json({
+      ok: true,
+      success: true,
+      message: result.message,
+    })
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      success: false,
+      error: error.message,
+    })
+  }
+}
+
 export const wishlistController = {
   getUserWishlist,
   toggleWishlistItem,
+  removeFromWishlist,
 }

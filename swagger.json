@@ -335,7 +335,7 @@
     },
     "/api/products/{id}/reviews": {
       "get": {
-        "summary": "Obtener reseñas de un producto (MongoDB)",
+        "summary": "Obtener reseña de un producto (MongoDB)",
         "description": "Obtiene la lista de reseñas del producto a partir del ID de producto.",
         "parameters": [
           {
@@ -395,6 +395,53 @@
         }
       }
     },
+    "/api/products/{id}/reviews/{reviewId}": {
+      "delete": {
+        "summary": "Eliminar una reseña por ID (MongoDB)",
+        "description": "Permite al usuario creador de la reseña o a un administrador eliminarla. Requiere autenticación.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID numérico del producto",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "description": "ID hexadecimal de MongoDB de la reseña",
+            "schema": {
+              "type": "string",
+              "example": "66810a9051fb8701041935ff"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reseña eliminada con éxito"
+          },
+          "400": {
+            "description": "ID de la reseña no válido"
+          },
+          "401": {
+            "description": "No autorizado o token no válido"
+          },
+          "500": {
+            "description": "Error al eliminar la reseña (permisos o base de datos)"
+          }
+        }
+      }
+    },
     "/api/wishlist": {
       "get": {
         "summary": "Obtener wishlist del usuario",
@@ -443,6 +490,41 @@
             "description": "No autorizado"
           }
         }
+      },
+      "delete": {
+        "summary": "Eliminar un producto de la wishlist",
+        "description": "Remueve explícitamente el producto indicado de la lista de favoritos del usuario. Requiere autenticación.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "description": "ID numérico del producto a remover",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Producto eliminado de favoritos con éxito"
+          },
+          "400": {
+            "description": "ID del producto no válido"
+          },
+          "401": {
+            "description": "No autorizado"
+          },
+          "500": {
+            "description": "Error al eliminar (por ejemplo, si el producto no está en favoritos)"
+          }
+        }
       }
     },
     "/api/whislist": {
@@ -484,6 +566,31 @@
         "responses": {
           "200": {
             "description": "Estado de la wishlist actualizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar un producto de la wishlist (Alias)",
+        "description": "Alias con tolerancia a typo del endpoint principal de wishlist.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Producto eliminado de favoritos con éxito"
           }
         }
       }

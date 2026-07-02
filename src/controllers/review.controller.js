@@ -73,7 +73,39 @@ const addProductReview = async (req, res, next) => {
   }
 }
 
+const deleteProductReview = async (req, res, next) => {
+  try {
+    const reviewId = req.params.reviewId
+
+    if (!reviewId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        ok: false,
+        success: false,
+        error: "El ID de la reseña no es válido",
+      })
+    }
+
+    const userId = req.user.id
+    const userRole = req.user.role
+
+    await reviewService.deleteReview(reviewId, userId, userRole)
+
+    res.json({
+      ok: true,
+      success: true,
+      message: "Reseña eliminada con éxito",
+    })
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      success: false,
+      error: error.message,
+    })
+  }
+}
+
 export const reviewController = {
   getProductReviews,
   addProductReview,
+  deleteProductReview,
 }

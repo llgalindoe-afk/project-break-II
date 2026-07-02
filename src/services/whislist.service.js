@@ -61,7 +61,33 @@ const toggleWishlistProduct = async (userId, productId) => {
   }
 }
 
+const removeFromWishlist = async (userId, productId) => {
+  const pId = parseInt(productId)
+  const uId = parseInt(userId)
+
+  const wishlist = await Wishlist.findOne({ userId: uId })
+
+  if (!wishlist) {
+    throw new Error("El usuario no tiene una lista de favoritos activa")
+  }
+
+  const index = wishlist.products.indexOf(pId)
+
+  if (index === -1) {
+    throw new Error("El producto no está en tus favoritos")
+  }
+
+  wishlist.products.splice(index, 1)
+  wishlist.updatedAt = new Date()
+  await wishlist.save()
+
+  return {
+    message: "Producto eliminado de favoritos con éxito",
+  }
+}
+
 export const wishlistService = {
   getWishlistProducts,
   toggleWishlistProduct,
+  removeFromWishlist,
 }
